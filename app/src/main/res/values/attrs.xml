@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="NekoView">
+        <attr name="visualState" format="enum">
+            <!-- Each of the following values maps to the ordinal value of NekoVisualState enum -->
+            <enum name="awake" value="0"/>
+            <enum name="down1" value="1"/>
+            <enum name="down2" value="2"/>
+            <enum name="left1" value="3"/>
+            <enum name="left2" value="4"/>
+            <enum name="right1" value="5"/>
+            <enum name="right2" value="6"/>
+            <enum name="up1" value="7"/>
+            <enum name="up2" value="8" />
+            <enum name="scratchDown1" value="9"/>
+            <enum name="scratchDown2" value="10"/>
+            <enum name="scratchLeft1" value="11"/>
+            <enum name="scratchLeft2" value="12"/>
+            <enum name="scratchRight1" value="13"/>
+            <enum name="scratchRight2" value="14"/>
+            <enum name="scratchUp1" value="15"/>
+            <enum name="scratchUp2" value="16"/>
+            <enum name="sleep1" value="17"/>
+            <enum name="sleep2" value="18"/>
+            <enum name="upRight1" value="19"/>
+            <enum name="upRight2" value="20"/>
+            <enum name="upLeft1" value="21"/>
+            <enum name="upLeft2" value="22"/>
+            <enum name="downRight1" value="23"/>
+            <enum name="downRight2" value="24"/>
+            <enum name="downLeft1" value="25"/>
+            <enum name="downLeft2" value="26"/>
+            <enum name="scratch1" value="27"/>
+            <enum name="scratch2" value="28"/>
+            <enum name="yawn" value="29"/>
+            <enum name="lick" value="30"/>
+            <enum name="still" value="31"/>
+        </attr>
+    </declare-styleable>
+</resources>
