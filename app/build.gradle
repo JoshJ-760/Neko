@@ -7,7 +7,7 @@ android {
     buildToolsVersion "30.0.2"
 
     defaultConfig {
-        applicationId "org.jj1283.neko"
+        applicationId "org.joshj760.neko"
         minSdkVersion 27
         targetSdkVersion 30
         versionCode 1

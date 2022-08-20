@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.jj1283.neko">
+    package="org.joshj760.neko">
 
     <application
         android:allowBackup="true"

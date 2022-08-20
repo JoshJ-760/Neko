@@ -1,4 +1,4 @@
-package org.jj1283.neko;
+package org.joshj760.neko;
 
 import org.junit.Test;
 
