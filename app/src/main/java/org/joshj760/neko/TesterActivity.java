@@ -4,18 +4,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
-import java.util.Collection;
-
-public class MainActivity extends AppCompatActivity {
+public class TesterActivity extends AppCompatActivity {
 
     ViewHolder viewHolder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_tester);
 
         viewHolder = new ViewHolder();
 
@@ -24,17 +23,43 @@ public class MainActivity extends AppCompatActivity {
             viewHolder.showingState.setText(randomState.toString());
             viewHolder.nekoView.setSprite(randomState);
         });
+
+        viewHolder.scaleSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                float scale = (float)progress/10f;
+
+                viewHolder.nekoView.setScale(scale);
+                viewHolder.scaleText.setText(String.valueOf((float)seekBar.getProgress()/10f));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                //intentionally blank
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                //intentionally blank
+            }
+        });
     }
 
     private class ViewHolder {
+        TextView scaleText;
+        SeekBar scaleSlider;
         Button taskButton;
         TextView showingState;
         NekoView nekoView;
 
         ViewHolder() {
+            scaleText = findViewById(R.id.scale_text);
+            scaleSlider = findViewById(R.id.scale_slider);
             taskButton = findViewById(R.id.taskButton);
             showingState = findViewById(R.id.enumName);
             nekoView = findViewById(R.id.nekoView);
+
+            scaleText.setText(String.valueOf((float)scaleSlider.getProgress()/10f));
         }
     }
 

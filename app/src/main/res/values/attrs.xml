@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="NekoView">
+        <attr name="nekoScale" format="float"/>
         <attr name="visualState" format="enum">
             <!-- Each of the following values maps to the ordinal value of NekoVisualState enum -->
             <enum name="awake" value="0"/>
