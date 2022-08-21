@@ -18,19 +18,21 @@ public class TesterActivity extends AppCompatActivity {
 
         viewHolder = new ViewHolder();
 
+        //Button Switches to a random sprite
         viewHolder.taskButton.setOnClickListener((v) -> {
-            NekoVisualState randomState = Utility.getRandomItem(NekoVisualState.values());
-            viewHolder.showingState.setText(randomState.toString());
+            NekoSprites randomState = Utility.getRandomItem(NekoSprites.values());
+            viewHolder.nekoStateTextView.setText(randomState.toString());
             viewHolder.nekoView.setSprite(randomState);
         });
 
-        viewHolder.scaleSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        //updates the scale (physical size) of Neko when the user drags the bar
+        viewHolder.scaleSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 float scale = (float)progress/10f;
 
                 viewHolder.nekoView.setScale(scale);
-                viewHolder.scaleText.setText(String.valueOf((float)seekBar.getProgress()/10f));
+                viewHolder.scaleTextView.setText(String.valueOf((float)seekBar.getProgress()/10f));
             }
 
             @Override
@@ -46,20 +48,22 @@ public class TesterActivity extends AppCompatActivity {
     }
 
     private class ViewHolder {
-        TextView scaleText;
-        SeekBar scaleSlider;
+        TextView scaleTextView;
+        SeekBar scaleSeekBar;
         Button taskButton;
-        TextView showingState;
+        TextView nekoStateTextView;
         NekoView nekoView;
 
         ViewHolder() {
-            scaleText = findViewById(R.id.scale_text);
-            scaleSlider = findViewById(R.id.scale_slider);
+            scaleTextView = findViewById(R.id.scale_text);
+            scaleSeekBar = findViewById(R.id.scale_slider);
             taskButton = findViewById(R.id.taskButton);
-            showingState = findViewById(R.id.enumName);
+            nekoStateTextView = findViewById(R.id.enumName);
             nekoView = findViewById(R.id.nekoView);
 
-            scaleText.setText(String.valueOf((float)scaleSlider.getProgress()/10f));
+            //set initial values of scale seekbar
+            scaleSeekBar.setProgress((int)(nekoView.getScale()*10f));
+            scaleTextView.setText(String.valueOf((float) scaleSeekBar.getProgress()/10f));
         }
     }
 

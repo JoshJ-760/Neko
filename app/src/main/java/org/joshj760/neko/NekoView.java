@@ -1,11 +1,10 @@
 package org.joshj760.neko;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
@@ -14,15 +13,16 @@ public class NekoView extends androidx.appcompat.widget.AppCompatImageView {
 
     private static final int SPRITE_WIDTH_PIXELS = 32;
     private static final int SPRITE_HEIGHT_PIXELS = 32;
+    private static final float DEFAULT_SCALE = 1;
+    private static final NekoSprites DEFAULT_NEKO_SPRITE = NekoSprites.AWAKE;
 
     @DrawableRes private static final int nekoSpriteSheet = R.drawable.neko_sprite_sheet;
 
-    private float density;
     private int xPixelOffset = 0;
     private int yPixelOffset = 0;
     private float scale = 1;
-    private NekoVisualState currentVisualState;
-    private Matrix appliedMatrix;
+    private NekoSprites displayedSprite;
+    private Matrix appliedMatrix = new Matrix();
 
     public NekoView(Context context) {
         super(context);
@@ -39,36 +39,49 @@ public class NekoView extends androidx.appcompat.widget.AppCompatImageView {
         init(attrs);
     }
 
-    public void setSprite(NekoVisualState sprite) {
+    /**
+     * Sets the displayed sprite in this view
+     * @param sprite the NekoSprite state to display
+     */
+    public void setSprite(NekoSprites sprite) {
         xPixelOffset = (int)(-1f * ((float)sprite.getColOffset())
                 * ((float)SPRITE_WIDTH_PIXELS));
         yPixelOffset = (int)(-1f * ((float)sprite.getRowOffset())
                 * ((float)SPRITE_HEIGHT_PIXELS));
 
-        appliedMatrix.reset();
-        appliedMatrix.postTranslate(xPixelOffset, yPixelOffset);
-        appliedMatrix.postScale(this.scale, this.scale, 0, 0);
-        setImageMatrix(appliedMatrix);
+        invalidate();
     }
 
+    /**
+     * Sets the scale of this view
+     * @param scale
+     */
     public void setScale(float scale) {
         this.scale = scale;
-
-        appliedMatrix.reset();
-        appliedMatrix.postTranslate(xPixelOffset, yPixelOffset);
-        appliedMatrix.postScale(this.scale, this.scale, 0, 0);
-        setImageMatrix(appliedMatrix);
         requestLayout();
     }
 
-    private void init(@Nullable AttributeSet attrs) {
-        //get parameters of display for image size calculations
-        DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
-        density = metrics.density;
-        //TODO get width from attrs....
-        //scale = (((float)getWidth()) / density / ((float)SPRITE_WIDTH_PIXELS));
-        scale = 1;
+    /**
+     * Applies the scaling/translation matrix on redraw
+     * @param canvas
+     */
+    @Override
+    protected void onDraw(Canvas canvas) {
+        applyMatrix();
+        canvas.concat(appliedMatrix);
+        getDrawable().draw(canvas);
+    }
 
+    /**
+     * regenerates the matrix based upon the latest translate(for sprite-offset)/scale data
+     */
+    private void applyMatrix() {
+        appliedMatrix.reset();
+        appliedMatrix.postTranslate(xPixelOffset, yPixelOffset);
+        appliedMatrix.postScale(scale, scale, 0, 0);
+    }
+
+    private void init(@Nullable AttributeSet attrs) {
         //set image resource
         setImageResource(R.drawable.neko_sprite_sheet);
 
@@ -76,29 +89,41 @@ public class NekoView extends androidx.appcompat.widget.AppCompatImageView {
         getDrawable().setFilterBitmap(false);
 
         //this allows sprite manipulation and scaling within bounds of image
-        appliedMatrix = new Matrix();
         setImageMatrix(appliedMatrix);
         setScaleType(ScaleType.MATRIX);
 
         //get visual state if defined in attributes (or get default)
         setPropertiesFromAttributes(attrs);
-
     }
 
+    /**
+     * The view should be (sprite_size * scale) x (sprite_size * scale) large
+     * @param widthMeasureSpec ignored
+     * @param heightMeasureSpec ignored
+     */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         setMeasuredDimension((int)((float)SPRITE_WIDTH_PIXELS*scale),
                 (int)((float)SPRITE_HEIGHT_PIXELS*scale));
     }
 
+    /**
+     * Called on init to grab custom attributes and assign them to this view
+     * @param attrs custom attributes to set
+     */
     private void setPropertiesFromAttributes(@Nullable AttributeSet attrs) {
         scale = getScaleFromAttributes(attrs);
-        currentVisualState = getInitialVisualState(attrs);
+        displayedSprite = getInitialVisualState(attrs);
     }
 
+    /**
+     * Specifically looks for the nekoScale attribute and returns its value, or returns
+     * the default value DEFAULT_SCALE if it isn't available
+     * @param attrs
+     * @return
+     */
     private float getScaleFromAttributes(@Nullable AttributeSet attrs) {
-        //default scale is 1;
-        float defValue = 1.0f;
+        float defValue = DEFAULT_SCALE;
         float scale = defValue;
         if (attrs != null) {
             TypedArray a = getContext().getTheme().obtainStyledAttributes(
@@ -116,9 +141,14 @@ public class NekoView extends androidx.appcompat.widget.AppCompatImageView {
         return scale;
     }
 
-    private NekoVisualState getInitialVisualState(@Nullable AttributeSet attrs) {
-        //default state is "AWAKE"
-        int defValue = NekoVisualState.AWAKE.ordinal();
+    /**
+     * Specifically looks for the NekoSprite attribute and returns its value, or returns
+     * the default value DEFAULT_NEKO_SPRITE if it isn't available
+     * @param attrs
+     * @return
+     */
+    private NekoSprites getInitialVisualState(@Nullable AttributeSet attrs) {
+        int defValue = DEFAULT_NEKO_SPRITE.ordinal();
         int initialVisualStateOrdinal = defValue;
         if (attrs != null) {
             TypedArray a = getContext().getTheme().obtainStyledAttributes(
@@ -127,14 +157,20 @@ public class NekoView extends androidx.appcompat.widget.AppCompatImageView {
                     0,
                     0);
             try {
-                initialVisualStateOrdinal = a.getInt(R.styleable.NekoView_visualState, defValue);
+                initialVisualStateOrdinal = a.getInt(R.styleable.NekoView_nekoSprite, defValue);
             } finally {
                 a.recycle();
             }
         }
 
-        return NekoVisualState.fromOrdinal(initialVisualStateOrdinal);
+        return NekoSprites.fromOrdinal(initialVisualStateOrdinal);
     }
 
+    public float getScale() {
+        return scale;
+    }
 
+    public NekoSprites getDisplayedSprite() {
+        return displayedSprite;
+    }
 }

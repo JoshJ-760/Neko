@@ -23,7 +23,6 @@
         android:layout_height="wrap_content"
         android:min="1"
         android:max="100"
-        android:progress="10"
         />
 
     <Button
@@ -46,7 +45,10 @@
     </LinearLayout>
     <org.joshj760.neko.NekoView
         android:id="@+id/nekoView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:visualState="awake"/>
+        app:nekoSprite="awake"
+        app:nekoScale="5"
+        android:layout_gravity="center"
+        />
 </LinearLayout>

@@ -2,7 +2,7 @@
 <resources>
     <declare-styleable name="NekoView">
         <attr name="nekoScale" format="float"/>
-        <attr name="visualState" format="enum">
+        <attr name="nekoSprite" format="enum">
             <!-- Each of the following values maps to the ordinal value of NekoVisualState enum -->
             <enum name="awake" value="0"/>
             <enum name="down1" value="1"/>

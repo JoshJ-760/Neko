@@ -1,6 +1,6 @@
 package org.joshj760.neko;
 
-public enum NekoVisualState {
+public enum NekoSprites {
     AWAKE(0,0),
     DOWN1(1, 0),
     DOWN2(0, 1),
@@ -37,7 +37,7 @@ public enum NekoVisualState {
     private final int colOffset;
     private final int rowOffset;
 
-    NekoVisualState(int colOffset, int rowOffset) {
+    NekoSprites(int colOffset, int rowOffset) {
         this.colOffset = colOffset;
         this.rowOffset = rowOffset;
     }
@@ -50,7 +50,7 @@ public enum NekoVisualState {
         return rowOffset;
     }
 
-    public static NekoVisualState fromOrdinal(int value) {
-        return NekoVisualState.values()[value];
+    public static NekoSprites fromOrdinal(int value) {
+        return NekoSprites.values()[value];
     }
 }
