@@ -1,6 +1,6 @@
-package org.joshj760.neko;
+package org.joshj760.neko.sprite;
 
-public enum NekoSprites {
+public enum NekoSprite {
     AWAKE(0,0),
     DOWN1(1, 0),
     DOWN2(0, 1),
@@ -10,14 +10,14 @@ public enum NekoSprites {
     RIGHT2(4,2),
     UP1(5, 0),
     UP2(4, 4),
-    SCRATCH_DOWN1(2, 0),
-    SCRATCH_DOWN2(1, 1),
-    SCRATCH_LEFT1(2, 3),
-    SCRATCH_LEFT2(3, 3),
-    SCRATCH_RIGHT1(0, 4),
-    SCRATCH_RIGHT2(1, 4),
-    SCRATCH_UP1(0, 5),
-    SCRATCH_UP2(1, 5),
+    CLAW_DOWN1(2, 0),
+    CLAW_DOWN2(1, 1),
+    CLAW_LEFT1(2, 3),
+    CLAW_LEFT2(3, 3),
+    CLAW_RIGHT1(0, 4),
+    CLAW_RIGHT2(1, 4),
+    CLAW_UP1(0, 5),
+    CLAW_UP2(1, 5),
     SLEEP1(2, 4),
     SLEEP2(3, 4),
     UP_RIGHT1(5, 4),
@@ -31,13 +31,13 @@ public enum NekoSprites {
     SCRATCH1(3, 1),
     SCRATCH2(3, 2),
     YAWN(4, 1),
-    LICK(3,0),
-    STILL(4, 0);
+    WASH(3,0),
+    IDLE(4, 0);
 
     private final int colOffset;
     private final int rowOffset;
 
-    NekoSprites(int colOffset, int rowOffset) {
+    NekoSprite(int colOffset, int rowOffset) {
         this.colOffset = colOffset;
         this.rowOffset = rowOffset;
     }
@@ -50,7 +50,7 @@ public enum NekoSprites {
         return rowOffset;
     }
 
-    public static NekoSprites fromOrdinal(int value) {
-        return NekoSprites.values()[value];
+    public static NekoSprite fromOrdinal(int value) {
+        return NekoSprite.values()[value];
     }
 }

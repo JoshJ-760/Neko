@@ -1,4 +1,4 @@
-package org.joshj760.neko;
+package org.joshj760.neko.sprite;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -9,32 +9,34 @@ import android.util.AttributeSet;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 
-public class NekoView extends androidx.appcompat.widget.AppCompatImageView {
+import org.joshj760.neko.R;
+
+public class NekoSpriteView extends androidx.appcompat.widget.AppCompatImageView {
 
     private static final int SPRITE_WIDTH_PIXELS = 32;
     private static final int SPRITE_HEIGHT_PIXELS = 32;
     private static final float DEFAULT_SCALE = 1;
-    private static final NekoSprites DEFAULT_NEKO_SPRITE = NekoSprites.AWAKE;
+    private static final NekoSprite DEFAULT_NEKO_SPRITE = NekoSprite.AWAKE;
 
     @DrawableRes private static final int nekoSpriteSheet = R.drawable.neko_sprite_sheet;
 
     private int xPixelOffset = 0;
     private int yPixelOffset = 0;
     private float scale = 1;
-    private NekoSprites displayedSprite;
+    private NekoSprite displayedSprite;
     private Matrix appliedMatrix = new Matrix();
 
-    public NekoView(Context context) {
+    public NekoSpriteView(Context context) {
         super(context);
         init(null);
     }
 
-    public NekoView(Context context, @Nullable AttributeSet attrs) {
+    public NekoSpriteView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init(attrs);
     }
 
-    public NekoView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public NekoSpriteView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(attrs);
     }
@@ -43,7 +45,8 @@ public class NekoView extends androidx.appcompat.widget.AppCompatImageView {
      * Sets the displayed sprite in this view
      * @param sprite the NekoSprite state to display
      */
-    public void setSprite(NekoSprites sprite) {
+    public void setSprite(NekoSprite sprite) {
+        displayedSprite = sprite;
         xPixelOffset = (int)(-1f * ((float)sprite.getColOffset())
                 * ((float)SPRITE_WIDTH_PIXELS));
         yPixelOffset = (int)(-1f * ((float)sprite.getRowOffset())
@@ -113,7 +116,7 @@ public class NekoView extends androidx.appcompat.widget.AppCompatImageView {
      */
     private void setPropertiesFromAttributes(@Nullable AttributeSet attrs) {
         scale = getScaleFromAttributes(attrs);
-        displayedSprite = getInitialVisualState(attrs);
+        setSprite(getInitialSprite(attrs));
     }
 
     /**
@@ -128,11 +131,11 @@ public class NekoView extends androidx.appcompat.widget.AppCompatImageView {
         if (attrs != null) {
             TypedArray a = getContext().getTheme().obtainStyledAttributes(
                     attrs,
-                    R.styleable.NekoView,
+                    R.styleable.NekoSpriteView,
                     0,
                     0);
             try {
-                scale = a.getFloat(R.styleable.NekoView_nekoScale, defValue);
+                scale = a.getFloat(R.styleable.NekoSpriteView_nekoScale, defValue);
             } finally {
                 a.recycle();
             }
@@ -147,30 +150,31 @@ public class NekoView extends androidx.appcompat.widget.AppCompatImageView {
      * @param attrs
      * @return
      */
-    private NekoSprites getInitialVisualState(@Nullable AttributeSet attrs) {
+    private NekoSprite getInitialSprite(@Nullable AttributeSet attrs) {
         int defValue = DEFAULT_NEKO_SPRITE.ordinal();
-        int initialVisualStateOrdinal = defValue;
+        int initialSpriteOrdinal = defValue;
         if (attrs != null) {
             TypedArray a = getContext().getTheme().obtainStyledAttributes(
                     attrs,
-                    R.styleable.NekoView,
+                    R.styleable.NekoSpriteView,
                     0,
                     0);
             try {
-                initialVisualStateOrdinal = a.getInt(R.styleable.NekoView_nekoSprite, defValue);
+                initialSpriteOrdinal = a.getInt(R.styleable.NekoSpriteView_nekoSprite,
+                        defValue);
             } finally {
                 a.recycle();
             }
         }
 
-        return NekoSprites.fromOrdinal(initialVisualStateOrdinal);
+        return NekoSprite.fromOrdinal(initialSpriteOrdinal);
     }
 
     public float getScale() {
         return scale;
     }
 
-    public NekoSprites getDisplayedSprite() {
+    public NekoSprite getDisplayedSprite() {
         return displayedSprite;
     }
 }

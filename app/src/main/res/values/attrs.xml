@@ -1,9 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="NekoView">
+        <attr name="nekoState" format="enum">
+            <enum name="awake" value="0"/>
+            <enum name="runDown" value="1"/>
+            <enum name="runLeft" value="2"/>
+            <enum name="runRight" value="3"/>
+            <enum name="runUp" value="4"/>
+            <enum name="scratchDown" value="5"/>
+            <enum name="scratchLeft" value="6"/>
+            <enum name="scratchRight" value="7"/>
+            <enum name="scratchUp" value="8" />
+            <enum name="asleep" value="9" />
+            <enum name="runUpRight" value="10"/>
+            <enum name="runUpLeft" value="11"/>
+            <enum name="runDownRight" value="12"/>
+            <enum name="runDownLeft" value="13"/>
+            <enum name="scratchSelf" value="14"/>
+            <enum name="yawning" value="15"/>
+            <enum name="lick" value="16"/>
+            <enum name="idle" value="17"/>
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="NekoSpriteView">
         <attr name="nekoScale" format="float"/>
         <attr name="nekoSprite" format="enum">
-            <!-- Each of the following values maps to the ordinal value of NekoVisualState enum -->
+            <!-- Each of the following values maps to the ordinal value of NekoSprite enum -->
             <enum name="awake" value="0"/>
             <enum name="down1" value="1"/>
             <enum name="down2" value="2"/>
@@ -35,7 +57,7 @@
             <enum name="scratch2" value="28"/>
             <enum name="yawn" value="29"/>
             <enum name="lick" value="30"/>
-            <enum name="still" value="31"/>
+            <enum name="idle" value="31"/>
         </attr>
     </declare-styleable>
 </resources>
