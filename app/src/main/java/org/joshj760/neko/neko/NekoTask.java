@@ -154,7 +154,7 @@ public class NekoTask implements Runnable {
         countDown = Timings.FRAMES_AWAKE;
     }
 
-    private void runTo(int targetX, int targetY) {
+    protected void runTo(int targetX, int targetY) {
         nekoX = (int)nekoView.getX();
         nekoY = (int)nekoView.getY();
         this.targetX = targetX;

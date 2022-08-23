@@ -49,6 +49,7 @@ public class Neko {
     }
 
 
-
-
+    public void runTo(int x, int y) {
+        nekoTask.runTo(x, y);
+    }
 }

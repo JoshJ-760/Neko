@@ -1,7 +1,10 @@
 package org.joshj760.neko;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.RelativeLayout;
 
@@ -17,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     ViewHolder viewHolder;
     Neko neko;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +43,13 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
+        viewHolder.container.setOnTouchListener((v, event) -> {
+            if (neko != null && event.getAction() == MotionEvent.ACTION_DOWN) {
+                neko.runTo((int)event.getX(), (int)event.getY());
+            }
+
+            return false;
+        });
 
     }
 
