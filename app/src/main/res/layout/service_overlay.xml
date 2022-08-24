@@ -1,19 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/nekoContainer"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#89a">
-    <Button
-        android:id="@+id/taskButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Launch Service"/>
+    android:background="#00FFFFFF">
+
     <org.joshj760.neko.neko.NekoView
         android:id="@+id/nekoView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:translationZ="10px"
         app:nekoScale="4" />
 </RelativeLayout>
