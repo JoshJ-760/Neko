@@ -237,7 +237,7 @@ public class NekoTask implements Runnable {
 
     private void setSleep() {
         setNekoState(ASLEEP);
-        countDown = 20;
+        countDown = Utility.randomInt(60*5); //60 seconds
     }
 
     private void setScratch() {

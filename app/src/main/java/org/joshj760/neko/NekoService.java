@@ -126,7 +126,7 @@ public class NekoService extends Service {
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSPARENT);
         params.gravity = Gravity.TOP | Gravity.LEFT;
 
@@ -146,21 +146,13 @@ public class NekoService extends Service {
         ViewHolder(NekoView nekoView) {
             this.nekoView = nekoView;
 
-            nekoView.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-//                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-//                        Toast.makeText(NekoService.this, "Meow", Toast.LENGTH_SHORT).show();
-//                        return true;
-//                    }
-
-                    if ((event.getAction() == MotionEvent.ACTION_OUTSIDE)
-                            && (int)event.getY() != 0 && (int)event.getX() != 0) {
-                        nekoManager.runTo((int)event.getRawX(), (int)event.getRawY());
-                    }
-
-                    return false;
+            nekoView.setOnTouchListener((v, event) -> {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    Toast.makeText(NekoService.this, "Meow", Toast.LENGTH_SHORT).show();
+                    return true;
                 }
+
+                return false;
             });
         }
     }
