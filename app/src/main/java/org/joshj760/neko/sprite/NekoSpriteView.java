@@ -60,8 +60,10 @@ public class NekoSpriteView extends androidx.appcompat.widget.AppCompatImageView
      * @param scale
      */
     public void setScale(float scale) {
-        this.scale = scale;
-        requestLayout();
+        this.post(()->{
+            NekoSpriteView.this.scale = scale;
+            requestLayout();
+        });
     }
 
     /**

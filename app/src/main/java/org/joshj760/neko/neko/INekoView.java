@@ -10,8 +10,6 @@ public interface INekoView {
 
     public float getY();
 
-    public void setXY(int x, int y);
-
     public void nextSpriteFrame();
     public void setPosition(int positionX, int positionY);
 

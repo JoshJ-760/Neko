@@ -47,7 +47,8 @@ public class NekoView extends NekoSpriteView implements INekoView {
 
     public void setPosition(int positionX, int positionY) {
         this.post(()-> {
-            setXY(positionX, positionY);
+            setX(positionX);
+            setY(positionY);
         });
     }
 
@@ -89,12 +90,6 @@ public class NekoView extends NekoSpriteView implements INekoView {
         }
 
         return NekoState.fromOrdinal(initialStateOrdinal);
-    }
-
-    @Override
-    public void setXY(int x, int y) {
-        setX(x);
-        setY(y);
     }
 
 

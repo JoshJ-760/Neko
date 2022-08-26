@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.provider.Settings;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -15,14 +14,13 @@ import android.widget.RelativeLayout;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.joshj760.neko.neko.Neko;
 import org.joshj760.neko.neko.NekoView;
 import org.joshj760.neko.utility.BoundingBox;
 
 public class MainActivity extends AppCompatActivity {
 
     ViewHolder viewHolder;
-    Neko neko;
+    NekoManager nekoManager;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -41,10 +39,10 @@ public class MainActivity extends AppCompatActivity {
             vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
-                    neko = new Neko(viewHolder.nekoView,
+                    nekoManager = new NekoManager(viewHolder.nekoView,
                             new BoundingBox(0, viewHolder.container.getWidth(),
                             0, viewHolder.container.getHeight()));
-                    neko.start();
+                    nekoManager.start();
 
                     viewHolder.container.getViewTreeObserver()
                             .removeOnGlobalLayoutListener(this);
@@ -58,17 +56,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             } else {
                 Intent nekoServiceIntent = new Intent(this, NekoService.class);
-                startService(nekoServiceIntent);
+                startForegroundService(nekoServiceIntent);
             }
         });
 
-        viewHolder.taskButton.setOnTouchListener((v, ev)->{
-            return false;
-        });
-
         viewHolder.container.setOnTouchListener((v, event) -> {
-            if (neko != null && event.getAction() == MotionEvent.ACTION_DOWN) {
-                neko.runTo((int)event.getX(), (int)event.getY());
+            if (nekoManager != null && event.getAction() == MotionEvent.ACTION_DOWN) {
+                nekoManager.runTo((int)event.getX(), (int)event.getY());
             }
 
             return false;
@@ -79,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onPostCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         super.onPostCreate(savedInstanceState, persistentState);
-        neko = new Neko(viewHolder.nekoView,
+        nekoManager = new NekoManager(viewHolder.nekoView,
                 new BoundingBox(0, viewHolder.container.getWidth(),
                         0, viewHolder.container.getHeight()));
     }
@@ -87,16 +81,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (neko != null) {
-            neko.start();
+        if (nekoManager != null) {
+            nekoManager.start();
         }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        if (neko != null) {
-            neko.pause();
+        if (nekoManager != null) {
+            nekoManager.pause();
         }
     }
 

@@ -13,6 +13,16 @@ public class BoundingBox {
         this.y2 = y2;
     }
 
+    @Override
+    public String toString() {
+        return "BoundingBox{" +
+                "x1=" + x1 +
+                ", x2=" + x2 +
+                ", y1=" + y1 +
+                ", y2=" + y2 +
+                '}';
+    }
+
     public int getX1() {
         return x1;
     }

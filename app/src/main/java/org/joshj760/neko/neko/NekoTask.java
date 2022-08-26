@@ -1,5 +1,9 @@
 package org.joshj760.neko.neko;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import org.joshj760.neko.utility.BoundingBox;
 import org.joshj760.neko.utility.Utility;
 
@@ -31,7 +35,7 @@ public class NekoTask implements Runnable {
     private int dY;
 
 
-    NekoTask(INekoView nekoView, BoundingBox boundingBox) {
+    public NekoTask(INekoView nekoView, BoundingBox boundingBox) {
         this.nekoView = nekoView;
         this.boundingBox = boundingBox;
 
@@ -52,42 +56,65 @@ public class NekoTask implements Runnable {
     @Override
     //represents a single frame
     public void run() {
-        switch (nekoState) {
-            case AWAKE:
-                awakeFrame();
-                break;
-            case RUNNING_UP:
-            case RUNNING_DOWN:
-            case RUNNING_LEFT:
-            case RUNNING_RIGHT:
-            case RUNNING_UP_LEFT:
-            case RUNNING_UP_RIGHT:
-            case RUNNING_DOWN_LEFT:
-            case RUNNING_DOWN_RIGHT:
-                runFrame();
-                break;
-            case IDLE:
-                idleFrame();
-                break;
-            case WASH:
-                washFrame();
-                break;
-            case ASLEEP:
-                sleepFrame();
-                break;
-            case CLAW_UP:
-            case CLAW_DOWN:
-            case CLAW_LEFT:
-            case CLAW_RIGHT:
-                clawFrame();
-                break;
-            case YAWNING:
-                yawnFrame();
-                break;
-            case SCRATCHING_SELF:
-                scratchFrame();
-                break;
+        try {
+            Log.d("NekoTask", this.toString());
+
+            switch (nekoState) {
+                case AWAKE:
+                    awakeFrame();
+                    break;
+                case RUNNING_UP:
+                case RUNNING_DOWN:
+                case RUNNING_LEFT:
+                case RUNNING_RIGHT:
+                case RUNNING_UP_LEFT:
+                case RUNNING_UP_RIGHT:
+                case RUNNING_DOWN_LEFT:
+                case RUNNING_DOWN_RIGHT:
+                    runFrame();
+                    break;
+                case IDLE:
+                    idleFrame();
+                    break;
+                case WASH:
+                    washFrame();
+                    break;
+                case ASLEEP:
+                    sleepFrame();
+                    break;
+                case CLAW_UP:
+                case CLAW_DOWN:
+                case CLAW_LEFT:
+                case CLAW_RIGHT:
+                    clawFrame();
+                    break;
+                case YAWNING:
+                    yawnFrame();
+                    break;
+                case SCRATCHING_SELF:
+                    scratchFrame();
+                    break;
+            }
+        } catch (Exception ex) {
+            Log.e("NekoTask", ex.getMessage(), ex);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "NekoTask{" +
+                "countDown=" + countDown +
+                ", nekoSpeed=" + nekoSpeed +
+                ", nekoX=" + nekoX +
+                ", nekoY=" + nekoY +
+                ", targetX=" + targetX +
+                ", targetY=" + targetY +
+                ", dX=" + dX +
+                ", dY=" + dY +
+                ", neko.x=" + nekoView.getX() +
+                ", neko.y=" + nekoView.getY() +
+                ", boundingBox=" + boundingBox +
+                '}';
     }
 
     private void scratchFrame() {
@@ -154,7 +181,7 @@ public class NekoTask implements Runnable {
         countDown = Timings.FRAMES_AWAKE;
     }
 
-    protected void runTo(int targetX, int targetY) {
+    public void runTo(int targetX, int targetY) {
         nekoX = (int)nekoView.getX();
         nekoY = (int)nekoView.getY();
         this.targetX = targetX;
@@ -166,6 +193,8 @@ public class NekoTask implements Runnable {
         double angleDegrees = angleRadians * ( 180 / Math.PI );
         angleDegrees = Utility.normalize(angleDegrees);
         assignRunStateByDegree(angleDegrees);
+
+        nekoSpeed = (int)(NEKO_SPEED_UNSCALED * nekoView.getScale());
 
         dX = (int)(nekoSpeed * Math.cos(angleRadians));
         dY = -1*(int)(nekoSpeed * Math.sin(angleRadians));
