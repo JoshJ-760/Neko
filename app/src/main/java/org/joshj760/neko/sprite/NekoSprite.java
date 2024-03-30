@@ -1,6 +1,7 @@
 package org.joshj760.neko.sprite;
 
 public enum NekoSprite {
+    // Identify sprite locations on the sprite-sheet
     AWAKE(0,0),
     DOWN1(1, 0),
     DOWN2(0, 1),

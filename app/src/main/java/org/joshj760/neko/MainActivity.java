@@ -50,16 +50,21 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
+        // Sets task button to start the Neko Service. This requires the overlay permission to
+        // operate.
         viewHolder.taskButton.setOnClickListener((v)->{
             if (!Settings.canDrawOverlays(this)) {
+                // Ask the user to enable overlay permissions for this app
                 Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
                 startActivity(intent);
             } else {
+                // Start the service
                 Intent nekoServiceIntent = new Intent(this, NekoService.class);
                 startForegroundService(nekoServiceIntent);
             }
         });
 
+        // Tell Neko to run to the touch event location
         viewHolder.container.setOnTouchListener((v, event) -> {
             if (nekoManager != null && event.getAction() == MotionEvent.ACTION_DOWN) {
                 nekoManager.runTo((int)event.getX(), (int)event.getY());
